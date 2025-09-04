@@ -2,35 +2,102 @@
 <html lang="cs">
 <head>
   <meta charset="UTF-8">
-  <title>Kalorie To-Do List</title>
+  <title>Kalorický To-Do List</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <div class="app">
-    <h1>Kalorický To-Do List</h1>
+<body class="bg-light">
+  <div class="container my-4">
+    <h1 class="text-center text-primary mb-4">Kalorický To-Do List</h1>
 
-    <!-- nastavení denního cíle -->
-    <div class="goal">
-      <label for="goalInput">Denní cíl (kalorie):</label>
-      <input type="number" id="goalInput" placeholder="např. 500">
-      <button id="setGoalBtn">Nastavit cíl</button>
+    <!-- Uživatelská sekce -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h2 class="h5 mb-3">Nastavení uživatele</h2>
+        <div class="row g-2">
+          <div class="col-md-2"><input type="text" id="nickname" class="form-control" placeholder="Nickname"></div>
+          <div class="col-md-2"><input type="number" id="weight" class="form-control" placeholder="Váha (kg)"></div>
+          <div class="col-md-2"><input type="number" id="height" class="form-control" placeholder="Výška (cm)"></div>
+          <div class="col-md-2"><input type="number" id="age" class="form-control" placeholder="Věk"></div>
+          <div class="col-md-2">
+            <select id="gender" class="form-select">
+              <option value="male">Muž</option>
+              <option value="female">Žena</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <select id="jobType" class="form-select">
+              <option value="1.2">Kancelářská práce</option>
+              <option value="1.55">Lehce fyzická práce</option>
+              <option value="1.8">Manuálně náročná práce</option>
+            </select>
+          </div>
+        </div>
+        <button id="saveUserBtn" class="btn btn-success mt-3">Uložit uživatele</button>
+        <p id="userMessage" class="mt-2"></p>
+      </div>
     </div>
 
-    <!-- zobrazení progresu -->
-    <p id="goalStatus">Zatím nemáš nastavený cíl.</p>
+    <!-- Stav cíle -->
+    <p id="goalStatus" class="fw-bold text-center text-secondary">Zatím není uložen žádný uživatel.</p>
 
-    <!-- přidávání aktivit -->
-    <div class="activity">
-      <input type="text" id="activityInput" placeholder="Aktivita">
-      <input type="number" id="caloriesInput" placeholder="Spálené kalorie">
-      <button id="addBtn">Přidat aktivitu</button>
+    <div class="row">
+      <!-- Seznam uložených aktivit vlevo -->
+      <div class="col-md-4">
+        <h3 class="h5">Předdefinované aktivity</h3>
+        <div id="presetActivities" class="d-grid gap-2">
+          <!-- Aktivity se přidají jako karty -->
+        </div>
+      </div>
+
+      <!-- Denní seznam aktivit + graf vpravo -->
+      <div class="col-md-8">
+        <h3 class="h5">Aktivity dne (přetáhni sem)</h3>
+        <ul id="activityList" class="list-group mb-3 min-vh-25 border border-secondary p-2 bg-white"></ul>
+
+        <h3 class="h5">Graf aktivit</h3>
+        <canvas id="calorieChart" width="400" height="400"></canvas>
+      </div>
     </div>
 
-    <!-- seznam aktivit -->
-    <ul id="activityList"></ul>
+    <!-- Historie -->
+    <h3 class="h5 mt-4">Historie posledních 7 dní</h3>
+    <table id="historyTable" class="table table-striped">
+      <thead>
+        <tr>
+          <th>Datum</th>
+          <th>Aktivity</th>
+          <th>Spálené kalorie</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
   </div>
 
-  
+  <!-- Modal pro výběr délky aktivity -->
+  <div class="modal fade" id="durationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Zadej délku aktivity</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zavřít"></button>
+        </div>
+        <div class="modal-body">
+          <p id="selectedActivityName" class="fw-bold"></p>
+          <input type="number" step="0.25" min="0.25" id="activityDuration" class="form-control" placeholder="Délka v hodinách (např. 1.5)">
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="confirmDurationBtn" class="btn btn-primary">Přidat aktivitu</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS + Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="main.js"></script>
 </body>
 </html>
