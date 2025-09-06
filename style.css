@@ -1,16 +1,79 @@
-/* Lehké úpravy vzhledu */
-body {
-  font-family: Arial, sans-serif;
+/* Card headers - tmavší stříbrná */
+.card-header {
+  background-color: #666666;
+  color: white;
+  font-weight: bold;
 }
 
-#activityList {
-  min-height: 150px;
+/* drop zone */
+.drop-zone {
+  border: 2px dashed #6c757d;
+  padding: 20px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+.drop-zone.dragover {
+  background-color: #e9ecef;
 }
 
-.draggable {
-  cursor: grab;
+/* chart wrapper */
+.chart-wrap {
+  max-width: 400px;
+  margin: 0 auto;
 }
 
-.draggable:active {
-  cursor: grabbing;
+/* activity item style */
+.activity-item {
+  position: relative;
+}
+.activity-item .delete-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+  display: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+.activity-item:hover .delete-btn {
+  display: inline;
+  color: #dc3545;
+}
+
+/* save button zelená podle grafu */
+.save-btn {
+  background-color: #54D472;
+  border-color: #54D472;
+  color: white;
+  font-weight: bold;
+}
+
+/* seznam uživatelů switch button */
+#userList .list-group-item {
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  border-radius: 50px;
+}
+#userList .list-group-item.active {
+  background-color: #54D472;
+  color: white;
+}
+
+/* historie tlačítka */
+#historyButtons button {
+  flex: 1 1 calc(14% - 4px);
+  min-width: 80px;
+  border-radius: 50px;
+  background-color: #54D472;
+  color: white;
+  font-weight: bold;
+  border: none;
+  text-align: center;
+  transition: background-color 0.2s;
+}
+#historyButtons button.active {
+  background-color: #666666;
 }

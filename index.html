@@ -1,103 +1,132 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-  <meta charset="UTF-8">
-  <title>Kalorický To-Do List</title>
-  <!-- Bootstrap CSS -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Výdej kalorií</title>
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-light">
-  <div class="container my-4">
-    <h1 class="text-center text-primary mb-4">Kalorický To-Do List</h1>
+  <div class="container py-4">
+    <div class="row g-4">
 
-    <!-- Uživatelská sekce -->
-    <div class="card mb-4">
-      <div class="card-body">
-        <h2 class="h5 mb-3">Nastavení uživatele</h2>
-        <div class="row g-2">
-          <div class="col-md-2"><input type="text" id="nickname" class="form-control" placeholder="Nickname"></div>
-          <div class="col-md-2"><input type="number" id="weight" class="form-control" placeholder="Váha (kg)"></div>
-          <div class="col-md-2"><input type="number" id="height" class="form-control" placeholder="Výška (cm)"></div>
-          <div class="col-md-2"><input type="number" id="age" class="form-control" placeholder="Věk"></div>
-          <div class="col-md-2">
-            <select id="gender" class="form-select">
-              <option value="male">Muž</option>
-              <option value="female">Žena</option>
-            </select>
+      <!-- Uživatel -->
+      <div class="col-md-3">
+        <div class="card border-primary">
+          <div class="card-header">Uživatel</div>
+          <div class="card-body">
+            <div class="mb-2">
+              <label class="form-label">Přezdívka</label>
+              <input id="nickname" class="form-control">
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Váha (kg)</label>
+              <input id="weight" type="number" class="form-control">
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Výška (cm)</label>
+              <input id="height" type="number" class="form-control">
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Věk</label>
+              <input id="age" type="number" class="form-control">
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Pohlaví</label>
+              <select id="gender" class="form-select">
+                <option value="male">Muž</option>
+                <option value="female">Žena</option>
+              </select>
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Typ práce (aktivita)</label>
+              <select id="jobType" class="form-select">
+                <option value="1.2">Kancelářská (1.2)</option>
+                <option value="1.55">Střední (1.55)</option>
+                <option value="1.9">Manuální (1.9)</option>
+              </select>
+            </div>
+            <div class="d-grid">
+              <button id="saveUserBtn" class="btn btn-success save-btn">Uložit uživatele</button>
+            </div>
           </div>
-          <div class="col-md-2">
-            <select id="jobType" class="form-select">
-              <option value="1.2">Kancelářská práce</option>
-              <option value="1.55">Lehce fyzická práce</option>
-              <option value="1.8">Manuálně náročná práce</option>
-            </select>
+
+          <div class="card-footer">
+            <h6 class="mb-2">Seznam uživatelů</h6>
+            <div id="userList" class="d-grid gap-2"></div>
           </div>
         </div>
-        <button id="saveUserBtn" class="btn btn-success mt-3">Uložit uživatele</button>
-        <p id="userMessage" class="mt-2"></p>
       </div>
-    </div>
 
-    <!-- Stav cíle -->
-    <p id="goalStatus" class="fw-bold text-center text-secondary">Zatím není uložen žádný uživatel.</p>
+      <!-- Aktivity (katalog + vlastní) -->
+      <div class="col-md-3">
+        <div class="card border-success">
+          <div class="card-header">Aktivity</div>
+          <div class="card-body">
+            <h6>Uložené aktivity (táhni)</h6>
+            <div id="savedActivities" class="list-group mb-3"></div>
 
-    <div class="row">
-      <!-- Seznam uložených aktivit vlevo -->
-      <div class="col-md-4">
-        <h3 class="h5">Předdefinované aktivity</h3>
-        <div id="presetActivities" class="d-grid gap-2">
-          <!-- Aktivity se přidají jako karty -->
+            <hr>
+            <h6>Přidat vlastní aktivitu</h6>
+            <input id="customActivityName" class="form-control mb-2" placeholder="Název (např. 'Trail běh')">
+            <input id="customActivityCalories" type="number" class="form-control mb-2" placeholder="kcal za hodinu (např. 650)">
+            <button id="addCustomActivity" class="btn btn-outline-success w-100">Přidat do katalogu</button>
+          </div>
         </div>
       </div>
 
-      <!-- Denní seznam aktivit + graf vpravo -->
-      <div class="col-md-8">
-        <h3 class="h5">Aktivity dne (přetáhni sem)</h3>
-        <ul id="activityList" class="list-group mb-3 min-vh-25 border border-secondary p-2 bg-white"></ul>
-
-        <h3 class="h5">Graf aktivit</h3>
-        <canvas id="calorieChart" width="400" height="400"></canvas>
+      <!-- Graf a drop zona -->
+      <div class="col-md-6">
+        <div class="card border-info">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <span>Denní přehled</span>
+            <span id="burnedKcal">| Spáleno: 0 kCal</span>
+          </div>
+          <div class="card-body text-center">
+            <div id="dropZone" class="drop-zone mb-3">Přetáhni aktivitu sem</div>
+            <div class="chart-wrap mb-3">
+              <canvas id="calorieChart"></canvas>
+            </div>
+            <ul id="activityList" class="list-group"></ul>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <!-- Historie -->
-    <h3 class="h5 mt-4">Historie posledních 7 dní</h3>
-    <table id="historyTable" class="table table-striped">
-      <thead>
-        <tr>
-          <th>Datum</th>
-          <th>Aktivity</th>
-          <th>Spálené kalorie</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+      <!-- Historie -->
+      <div class="col-md-12">
+        <div class="card border-warning">
+          <div class="card-header">Historie</div>
+          <div class="card-body">
+            <div id="historyButtons" class="d-flex gap-2 flex-wrap"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 
-  <!-- Modal pro výběr délky aktivity -->
-  <div class="modal fade" id="durationModal" tabindex="-1" aria-hidden="true">
+  <!-- Modal pro zadání minut -->
+  <div class="modal fade" id="durationModal" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Zadej délku aktivity</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zavřít"></button>
         </div>
         <div class="modal-body">
-          <p id="selectedActivityName" class="fw-bold"></p>
-          <input type="number" step="0.25" min="0.25" id="activityDuration" class="form-control" placeholder="Délka v hodinách (např. 1.5)">
+          <label class="form-label">Délka v minutách</label>
+          <input id="activityDuration" type="number" class="form-control" placeholder="např. 30">
         </div>
         <div class="modal-footer">
-          <button type="button" id="confirmDurationBtn" class="btn btn-primary">Přidat aktivitu</button>
+          <button id="confirmDuration" type="button" class="btn btn-primary">Potvrdit</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Bootstrap JS + Popper -->
+  <script src="main.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="main.js"></script>
 </body>
 </html>
