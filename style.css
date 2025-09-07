@@ -1,79 +1,92 @@
-/* Card headers - tmavší stříbrná */
-.card-header {
-  background-color: #666666;
+:root{
+  --green:#54D472;
+  --dark-silver:#666666;
+}
+
+/* Top bar */
+.top-bar{
+  background: var(--dark-silver);
   color: white;
-  font-weight: bold;
+  padding: 10px;
+  border-radius: 8px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.top-bar h1{
+  margin:0;
+  text-shadow:
+    -1px -1px 0 #555,
+     1px -1px 0 #555,
+    -1px  1px 0 #555,
+     1px  1px 0 #555;
+  font-size:1.25rem;
+}
+.lang-btn{
+  background:white;
+  color:var(--dark-silver);
+  border:1px solid var(--dark-silver);
+  border-radius:6px;
+  padding:6px 10px;
+  margin-left:6px;
+  font-weight:600;
+}
+.lang-btn.active{ background:var(--dark-silver); color:white; }
+
+/* save user button */
+.save-btn{
+  background-color: var(--green) !important;
+  color:white !important;
+  border:none !important;
 }
 
 /* drop zone */
-.drop-zone {
-  border: 2px dashed #6c757d;
-  padding: 20px;
-  border-radius: 8px;
-  transition: background-color 0.2s;
-}
-.drop-zone.dragover {
-  background-color: #e9ecef;
-}
-
-/* chart wrapper */
-.chart-wrap {
-  max-width: 400px;
-  margin: 0 auto;
+.drop-zone{
+  border:2px dashed #6c757d;
+  border-radius:8px;
+  padding:12px;
+  text-align:center;
+  color:#6c757d;
+  cursor:pointer;
 }
 
-/* activity item style */
-.activity-item {
-  position: relative;
+/* chart */
+.chart-wrap{ max-width:300px; }
+
+/* activity item */
+.activity-item{ position:relative; }
+.activity-item .delete-btn{ position:absolute; right:8px; top:50%; transform:translateY(-50%); color:#c0392b; display:none;}
+.activity-item:hover .delete-btn{ display:inline; }
+
+/* history buttons */
+#historyButtons{ display:flex; gap:8px; flex-wrap:wrap; }
+#historyButtons button{ flex:1; min-width:110px; border-radius:8px; padding:8px; background:var(--green); color:white; border:none; }
+#historyButtons button.active{ background:var(--dark-silver); }
+
+/* user list switch-style */
+#userList button.list-group-item{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:20px;
+  padding:10px;
+  text-align:center;
+  background:#f8f9fa;
+  color:#333;
 }
-.activity-item .delete-btn {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #aaa;
-  display: none;
-  cursor: pointer;
-  font-size: 1.2rem;
-}
-.activity-item:hover .delete-btn {
-  display: inline;
-  color: #dc3545;
+#userList button.list-group-item.active{
+  background:var(--dark-silver);
+  color:white;
+  font-weight:600;
 }
 
-/* save button zelená podle grafu */
-.save-btn {
-  background-color: #54D472;
-  border-color: #54D472;
-  color: white;
-  font-weight: bold;
-}
+/* scrollbar limits */
+#savedActivities{ max-height:220px; overflow:auto; }
+#activityList{ max-height:220px; overflow:auto; }
 
-/* seznam uživatelů switch button */
-#userList .list-group-item {
-  text-align: center;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
-  border-radius: 50px;
-}
-#userList .list-group-item.active {
-  background-color: #54D472;
-  color: white;
-}
-
-/* historie tlačítka */
-#historyButtons button {
-  flex: 1 1 calc(14% - 4px);
-  min-width: 80px;
-  border-radius: 50px;
-  background-color: #54D472;
-  color: white;
-  font-weight: bold;
-  border: none;
-  text-align: center;
-  transition: background-color 0.2s;
-}
-#historyButtons button.active {
-  background-color: #666666;
+/* small responsive */
+@media (max-width:900px){
+  .chart-wrap{ max-width:220px; }
+  #historyButtons button{ min-width:80px; }
 }
