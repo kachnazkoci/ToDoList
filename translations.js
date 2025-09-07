@@ -37,7 +37,9 @@ const translations = {
       swimming: "Plavání",
       tennis: "Tenis",
       cooking: "Vaření",
-      trailrun: "Trail běh"
+      trailrun: "Trail běh", 
+      cleaning: "Úklid",
+      gardening: "Zahradničení"
     }
   },
 
@@ -79,7 +81,9 @@ const translations = {
       swimming: "Swimming",
       tennis: "Tennis",
       cooking: "Cooking",
-      trailrun: "Trail run"
+      trailrun: "Trail run", 
+      cleaning: "Cleaning",
+      gardening: "Gardening"
     }
   }
 };
