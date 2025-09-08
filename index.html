@@ -112,8 +112,12 @@
       <!-- Historie -->
       <div class="col-md-12">
         <div class="card border-warning">
-          <div class="card-header" data-i18n="historyHeader">Historie</div>
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <span data-i18n="historyHeader">Historie</span>
+            <span id="historyHint" class="small text-muted"></span>
+          </div>
           <div class="card-body">
+            <p id="historyHint" class="small text-muted"></p>
             <div id="historyButtons" class="d-flex gap-2 flex-wrap"></div>
           </div>
         </div>

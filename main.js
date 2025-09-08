@@ -19,7 +19,7 @@
   let currentLang = localStorage.getItem(LANG_KEY) || "cz";
   let pendingActivity = null; // object from drag
   let selectedHistoryDate = null; // 'YYYY-MM-DD' or null => today
-  const palette = ["#FFCC29","#54D472","#EB3D90","#4FCCD9","#407CE8"];
+  const palette = ["#FFCC29","#54D472","#407CE8","#EB3D90","#4FCCD9"];
   const remainingColor = "#ED3B3B";
   let calorieChart = null;
 
@@ -75,6 +75,10 @@
     if(nameInp) nameInp.placeholder = translations[currentLang].activityPlaceholderName;
     const kcalInp = document.getElementById("customActivityCalories");
     if(kcalInp) kcalInp.placeholder = translations[currentLang].activityPlaceholderKcal;
+
+        // nový hint v historii
+    const hintEl = document.getElementById("historyHint");
+    if(hintEl) hintEl.textContent = translations[currentLang].historyHint;
 
     // update history button labels after translation
     renderHistoryButtons();
