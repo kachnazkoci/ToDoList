@@ -85,30 +85,56 @@
   }
 
   // ---------- RENDER USER LIST ----------
-  function renderUserList(){
-    const wrap = document.getElementById("userList");
-    wrap.innerHTML="";
-    users.forEach(u=>{
-      const b = document.createElement("button");
-      b.className = "list-group-item list-group-item-action";
-      b.style.textAlign="center";
-      b.textContent = `${u.nickname}`;
-      if(currentUserNickname && currentUserNickname===u.nickname){
-        b.classList.add("active");
-      }
-      b.addEventListener("click", ()=>{
-        currentUserNickname = u.nickname;
-        saveCurrentUserNickname();
-        selectedHistoryDate = null; // reset to show today's view
-        fillUserForm(u);
+ function renderUserList() {
+  const wrap = document.getElementById("userList");
+  wrap.innerHTML = "";
+  users.forEach((u, idx) => {
+    const div = document.createElement("div");
+    div.className = "list-group-item user-item d-flex justify-content-between align-items-center position-relative";
+    // tlačítko s přezdívkou
+    const btn = document.createElement("button");
+    btn.className = "btn btn-link flex-grow-1 text-start";
+    btn.textContent = u.nickname;
+    if (currentUserNickname === u.nickname) {
+      btn.classList.add("fw-bold", "text-primary");
+    }
+    btn.addEventListener("click", () => {
+      currentUserNickname = u.nickname;
+      saveCurrentUserNickname();
+      selectedHistoryDate = null;
+      fillUserForm(u);
+      renderUserList();
+      renderActivityList();
+      updateChart();
+      renderHistoryButtons();
+    });
+
+    // křížek pro smazání uživatele
+    const del = document.createElement("span");
+    del.textContent = "❌";
+    del.className = "delete-user";
+    del.style.cursor = "pointer";
+    del.addEventListener("click", (e) => {
+      e.stopPropagation(); // aby se nespustilo vybrání uživatele - zabrání kliknutí na btn
+      if (confirm("Opravdu smazat uživatele?")) {
+        users.splice(idx, 1);
+        if (currentUserNickname === u.nickname) {
+          currentUserNickname = null;
+          saveCurrentUserNickname();
+        }
+        saveUsers();
         renderUserList();
         renderActivityList();
         updateChart();
         renderHistoryButtons();
-      });
-      wrap.appendChild(b);
+      }
     });
-  }
+
+    div.appendChild(btn);
+    div.appendChild(del);
+    wrap.appendChild(div);
+  });
+}
 
   function fillUserForm(u){
     if(!u) return;
@@ -438,3 +464,35 @@
   document.addEventListener("DOMContentLoaded", boot);
 
 })();
+
+// === NOTIFIKACE ===
+function requestNotificationPermission() {
+  if ("Notification" in window) {
+    Notification.requestPermission().then(permission => {
+      if (permission === "granted") {
+        console.log("Notifications enabled.");
+      }
+    });
+  }
+}
+
+function showReminder() {
+  if ("Notification" in window && Notification.permission === "granted") {
+    const now = new Date();
+    const hour = now.getHours();
+    if (hour >= 14) { // časová podmínka
+      new Notification(
+        currentLang === "cz" ? "Kalorický deník" : "Calory diary",
+        {
+          body: translations[currentLang].reminder,
+          icon: "icon.png" // volitelně přidej ikonku
+        }
+      );
+    }
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  requestNotificationPermission();
+  setInterval(showReminder, 10 * 60 * 1000); // každých 10 minut po 14. hodině
+});

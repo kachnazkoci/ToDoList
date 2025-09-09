@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <title>Test notifikací</title>
+</head>
+<body>
+  <h1>Test notifikací</h1>
+  <button id="notifyBtn">Zobrazit notifikaci</button>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Nejprve požádáme o oprávnění
+      if ("Notification" in window) {
+        if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+          Notification.requestPermission().then(permission => {
+            console.log("Permission:", permission);
+          });
+        }
+      }
+
+      // Po kliknutí na tlačítko zkusíme ukázat notifikaci
+      document.getElementById("notifyBtn").addEventListener("click", () => {
+        if ("Notification" in window && Notification.permission === "granted") {
+          new Notification("Kalorický deník", {
+            body: "Tohle je testovací upozornění 🎉",
+            icon: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg"
+          });
+        } else {
+          alert("Notifikace nejsou povolené.");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
