@@ -70,11 +70,11 @@
 /* activity item */
 .activity-item .delete-btn {
   position: absolute;
-  text-indent:"❌";
   right: 88px;
   top: 50%;
   transform: translateY(-50%);
   color: #c0392b;
+  font-size: 20px;   /* zvětšení křížku */
   font-weight: bold;   /* tučnější */
   cursor: pointer;     /* kurzor jako odkaz */
   display: none;

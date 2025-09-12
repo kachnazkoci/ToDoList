@@ -480,7 +480,7 @@ function showReminder() {
   if ("Notification" in window && Notification.permission === "granted") {
     const now = new Date();
     const hour = now.getHours();
-    if (hour >= 14) { // časová podmínka
+    if (hour >= 12) { // časová podmínka
       new Notification(
         currentLang === "cz" ? "Kalorický deník" : "Calory diary",
         {
